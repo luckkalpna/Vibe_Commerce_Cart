@@ -1,4 +1,6 @@
+// src/components/ReceiptModal.js
 import React from 'react';
+import './ReceiptModal.css'; // For basic styling
 
 function ReceiptModal({ receipt, onClose }) {
     if (!receipt) return null;

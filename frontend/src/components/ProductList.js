@@ -1,4 +1,6 @@
+// src/components/ProductList.js
 import React from 'react';
+import './ProductList.css'; // For basic styling
 
 function ProductList({ products, onAddToCart }) {
     return (

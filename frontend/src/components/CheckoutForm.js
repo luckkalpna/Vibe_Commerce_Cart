@@ -1,4 +1,6 @@
+// src/components/CheckoutForm.js
 import React, { useState } from 'react';
+import './CheckoutForm.css'; // For basic styling
 
 function CheckoutForm({ onCheckout }) {
     const [name, setName] = useState('');

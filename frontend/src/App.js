@@ -1,11 +1,13 @@
+// src/App.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 import CheckoutForm from './components/CheckoutForm';
 import ReceiptModal from './components/ReceiptModal';
+import './App.css'; // For basic styling
 
-const API_BASE_URL = 'http://localhost:5000/api'; 
+const API_BASE_URL = 'http://localhost:5000/api'; // Ensure this matches your backend port
 
 function App() {
     const [products, setProducts] = useState([]);

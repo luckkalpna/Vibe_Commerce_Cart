@@ -1,4 +1,6 @@
+// src/components/Cart.js
 import React from 'react';
+import './Cart.css'; // For basic styling
 
 function Cart({ items, total, onRemoveItem }) {
     return (

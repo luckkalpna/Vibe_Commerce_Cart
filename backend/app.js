@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors'); 
+const cors = require('cors'); // Required for frontend to talk to backend
 
 const Product = require('./models/product.model');
 const Cart = require('./models/cart.model');
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json()); // To parse JSON request bodies
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => {
     console.log('MongoDB connected');
+    // Optional: Seed products if the collection is empty
     seedProducts();
 })
 .catch(err => console.error('MongoDB connection error:', err));
@@ -49,7 +50,7 @@ async function seedProducts() {
 
 // --- API Routes ---
 
-// GET /api/products
+// GET /api/products: Get all mock items
 app.get('/api/products', async (req, res) => {
     try {
         const products = await Product.find({});
@@ -69,7 +70,7 @@ async function getOrCreateCart() {
     return cart;
 }
 
-// POST /api/cart
+// POST /api/cart: Add {productId, qty}
 app.post('/api/cart', async (req, res) => {
     const { productId, qty } = req.body;
     if (!productId || !qty || qty <= 0) {
@@ -86,8 +87,10 @@ app.post('/api/cart', async (req, res) => {
         const existingItemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
 
         if (existingItemIndex > -1) {
+            // Update quantity if item already in cart
             cart.items[existingItemIndex].qty += qty;
         } else {
+            // Add new item to cart
             cart.items.push({
                 productId: product._id,
                 name: product.name,
@@ -103,7 +106,7 @@ app.post('/api/cart', async (req, res) => {
     }
 });
 
-// DELETE /api/cart/:id
+// DELETE /api/cart/:id: Remove item (where :id is the productId)
 app.delete('/api/cart/:productId', async (req, res) => {
     const { productId } = req.params;
 
@@ -141,7 +144,9 @@ app.get('/api/cart', async (req, res) => {
 
 // POST /api/checkout: {cartItems} → mock receipt (total, timestamp)
 app.post('/api/checkout', async (req, res) => {
-    const { name, email, cartItems } = req.body; 
+    // In a real app, you'd process payment, update inventory, etc.
+    // For this mock, we just generate a receipt and clear the cart.
+    const { name, email, cartItems } = req.body; // Assuming frontend sends these for the receipt
 
     if (!cartItems || cartItems.length === 0) {
         return res.status(400).json({ message: 'Cart is empty. Cannot checkout.' });
@@ -175,7 +180,7 @@ app.post('/api/checkout', async (req, res) => {
     }
 });
 
-
+// Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
